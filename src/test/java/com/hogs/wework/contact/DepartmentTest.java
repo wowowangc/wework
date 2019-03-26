@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.equalTo;
 class DepartmentTest {
 
     Department department;
-    String rand = String.valueOf(System.currentTimeMillis());
+
     @BeforeEach
     void setUp() {
         department = new Department();
@@ -24,7 +24,7 @@ class DepartmentTest {
 
     @Test
     void create() {
-        String nameOld = "王" + rand;
+        String nameOld = "王" + department.rand;
         department.create(nameOld, "1").then().body("errcode",equalTo(0));
         //department.create("team1", "1").then().body("errcode",equalTo(60008));
         department.list("1").path("department.find{ it.name == '"+nameOld+"'}.id");
@@ -33,7 +33,7 @@ class DepartmentTest {
 
     @Test
     void createByMap() {
-        String nameOld = "王" + rand;
+        String nameOld = "王" + department.rand;
         HashMap<String, Object> map = new HashMap<>();
         map.put("name", nameOld);
         map.put("parentid","1");
@@ -52,7 +52,7 @@ class DepartmentTest {
 
     @Test
     void delete() {
-        String nameOld = "王" + rand;
+        String nameOld = "王" + department.rand;
         department.create(nameOld,"1");
         Integer x = department.list("").path("department.find{ it.name == '"+nameOld+"'}.id");
         System.out.println("x="+x);

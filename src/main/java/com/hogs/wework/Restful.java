@@ -22,8 +22,8 @@ public class Restful {
         return requestSpecification.when().get("www.baidu.com");
     }
 
-    public String template(String path, HashMap<String, Object> map){
-        DocumentContext documentContext = JsonPath.parse(this.getClass().getResourceAsStream(path));
+    public static String template(String path, HashMap<String, Object> map){
+        DocumentContext documentContext = JsonPath.parse(Restful.class.getResourceAsStream(path));
         map.entrySet().forEach(entry ->{
             documentContext.set(entry.getKey(), entry.getValue());
         });
