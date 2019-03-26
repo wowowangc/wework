@@ -14,8 +14,7 @@ public class Contact extends Restful {
     }
 
     public void reset(){
-        requestSpecification.given()
-                .log().all()
+        requestSpecification
                 .contentType(ContentType.JSON)
                 .queryParam("access_token",Wework.getToken());
     }

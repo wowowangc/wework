@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class Restful {
     HashMap<String, Object> query = new HashMap<String, Object>();
-    public RequestSpecification requestSpecification = RestAssured.given();
+    public RequestSpecification requestSpecification = RestAssured.given().log().all();
 
     public Response send(){
         if (query != null) {
@@ -23,7 +23,7 @@ public class Restful {
     }
 
     public String template(String path, HashMap<String, Object> map){
-        DocumentContext documentContext = JsonPath.parse(path);
+        DocumentContext documentContext = JsonPath.parse(this.getClass().getResourceAsStream(path));
         map.entrySet().forEach(entry ->{
             documentContext.set(entry.getKey(), entry.getValue());
         });

@@ -19,7 +19,7 @@ public class Department extends Contact {
         Response response = requestSpecification
                 .queryParam("id", id)
                 .when().get("https://qyapi.weixin.qq.com/cgi-bin/department/list")
-                .then().extract().response();
+                .then().log().body().extract().response();
 
         return response;
     }
@@ -46,11 +46,11 @@ public class Department extends Contact {
         map.entrySet().forEach(entry ->{
             documentContext.set(entry.getKey(), entry.getValue());
         });
-
+        String body= super.template("/data/create.json", map);
         return requestSpecification
-                .body(documentContext.jsonString())
+                .body(body)
                 .when().post("https://qyapi.weixin.qq.com/cgi-bin/department/create")
-                .then().extract().response();
+                .then().log().body().extract().response();
     }
 
     public Response delete(String id) {

@@ -12,7 +12,7 @@ public class Wework {
                 .queryParam("corpid", WeworkConfig.getInstance().corpid)
                 .queryParam("corpsecret", secret)
                 .when().get("https://qyapi.weixin.qq.com/cgi-bin/gettoken")
-                .then().log().all().statusCode(200).body("errcode", Matchers.equalTo(0)).extract().path("access_token");
+                .then().statusCode(200).body("errcode", Matchers.equalTo(0)).extract().path("access_token");
     }
 
 
