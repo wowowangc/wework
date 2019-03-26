@@ -42,7 +42,7 @@ public class Department extends Contact {
     //V3添加map传参
     public Response create(HashMap<String, Object> map) {
         reset();
-        String body= template("/data/create.json", map);
+        String body= super.template("/data/create.json", map);
         return requestSpecification
                 .body(body)
                 .when().post("https://qyapi.weixin.qq.com/cgi-bin/department/create")
