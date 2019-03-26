@@ -1,9 +1,13 @@
 package com.hogs.wework.contact;
 
 import com.hogs.wework.Wework;
+import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import io.restassured.response.Response;
 
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
@@ -28,8 +32,23 @@ public class Department extends Contact {
                 .set("$.name", departmentName)
                 .set("$.parentid", parentId)
                 .jsonString();
+
         return requestSpecification
                 .body(body)
+                .when().post("https://qyapi.weixin.qq.com/cgi-bin/department/create")
+                .then().extract().response();
+    }
+
+    //V3添加map传参
+    public Response create(HashMap<String, Object> map) {
+        reset();
+        DocumentContext documentContext = JsonPath.parse(this.getClass().getResourceAsStream("/data/create.json"));
+        map.entrySet().forEach(entry ->{
+            documentContext.set(entry.getKey(), entry.getValue());
+        });
+
+        return requestSpecification
+                .body(documentContext.jsonString())
                 .when().post("https://qyapi.weixin.qq.com/cgi-bin/department/create")
                 .then().extract().response();
     }
