@@ -10,7 +10,6 @@ import static org.hamcrest.Matchers.equalTo;
 class DepartmentTest {
 
     Department department;
-
     @BeforeEach
     void setUp() {
         department = new Department();
@@ -24,6 +23,7 @@ class DepartmentTest {
 
     @Test
     void create() {
+
         String nameOld = "王" + department.rand;
         department.create(nameOld, "1").then().body("errcode",equalTo(0));
         //department.create("team1", "1").then().body("errcode",equalTo(60008));
@@ -62,7 +62,6 @@ class DepartmentTest {
 
     @Test
     void delete0() {
-
         Integer x = 2;
         System.out.println("x="+x);
         String id = x.toString();

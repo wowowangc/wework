@@ -9,7 +9,9 @@ import io.restassured.specification.RequestSpecification;
 
 public class Contact extends Restful {
 
+
     public String rand = String.valueOf(System.currentTimeMillis());
+
     public Contact(){
         reset();
     }
