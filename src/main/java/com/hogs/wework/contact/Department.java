@@ -7,19 +7,25 @@ import io.restassured.response.Response;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
 public class Department extends Contact {
 
-    //V3 封装Restful
+    //V4 read from YAML, send Restful request
     public Response list(String id) {
         reset();
-        Response response = requestSpecification
-                .queryParam("id", id)
-                .when().get("https://qyapi.weixin.qq.com/cgi-bin/department/list")
-                .then().log().body().extract().response();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id",id);
+        Response response = templateFromYaml("/api/list.yml", map);
+
+        //更新为从yaml文件读取
+//        Response response = requestSpecification
+//                .queryParam("id", id)
+//                .when().get("https://qyapi.weixin.qq.com/cgi-bin/department/list")
+//                .then().log().body().extract().response();
 
         return response;
     }
@@ -52,8 +58,8 @@ public class Department extends Contact {
     public Response delete(String id) {
         reset();
         //V3 Restful Contact
-        return given().log().all().queryParam("access_token", Wework.getToken())
-                //return requestSpecification
+        //return given().log().all().queryParam("access_token", Wework.getToken())
+                return requestSpecification
                 .queryParam("id", id)
                 .when().post("https://qyapi.weixin.qq.com/cgi-bin/department/delete")
                 .then().extract().response();
@@ -73,6 +79,28 @@ public class Department extends Contact {
                 .body(body)
                 .when().post("https://qyapi.weixin.qq.com/cgi-bin/department/update")
                 .then().extract().response();
+    }
+
+
+    public Response update(HashMap<String, Object> map){
+        return templateFromHar(
+                "demo.har.json",
+                "https://work.weixin.qq.com/wework_admin/party?action=addparty" ,
+                map
+        );
+    }
+
+    public Response deleteAll(){
+        reset();
+        List<Integer> idList=list("").then().log().all().extract().path("department.id");
+        System.out.println(idList);
+        idList.forEach(id->delete(id.toString()));
+        return null;
+    }
+
+    public Response updateAll(HashMap<String, Object> map){
+        //return api("api.json", map);
+        return readApiFromYaml("readApiFromYaml.json", map);
     }
 
 }
